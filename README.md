@@ -1,5 +1,6 @@
 ![cf](https://i.imgur.com/7v5ASc8.png) 33: Redux Middleware
 ======
+## David's Description
 
 ## Submission Instructions
 * continue working on the fork you created from lab 26
