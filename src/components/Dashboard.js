@@ -3,7 +3,9 @@ import ReactDom from 'react-dom';
 
 import {connect} from 'react-redux';
 
-import {category_create, category_update, category_delete, category_toggle, expense_create, expense_update, expense_destroy, expense_toggle} from '../actions/category-action';
+import {category_create, category_update, category_delete, category_toggle} from '../actions/category-action';
+
+import {expense_create, expense_update, expense_destroy, expense_toggle} from '../actions/expense-action';
 
 import CategoryCreate from './Category/CategoryCreate.js';
 import CategoryDisplay from './Category/CategoryDisplay.js';
@@ -18,8 +20,8 @@ class Dashboard extends React.Component {
         return Object.keys(this.props.state.categories).map(category_key => {
             let localCategory = this.props.state.categories[category_key];
             return (localCategory.updating) ?
-                <CategoryUpdate category={localCategory} toggleCategory={this.props.category.toggleCategoryUpdate} updateCategory={this.props.category.updateCategory} key={category_key}/> :
-                <CategoryDisplay actions={this.props.category} category={localCategory} key={category_key}/>
+                <CategoryUpdate category={localCategory} action={this.props.category} key={category_key}/> :
+                <CategoryDisplay expenses={this.props.state.expenses} expense_action={this.props.expense} category_action={this.props.category} category={localCategory} key={category_key}/>
         });
 
     }
@@ -50,7 +52,9 @@ const mapDispatchToProps = (dispatch, getState) => ({
         addCategory: category => dispatch(category_create(category)),
         updateCategory: category => dispatch(category_update(category)),
         deleteCategory: category => dispatch(category_delete(category)),
-        toggleCategoryUpdate: category => dispatch(category_toggle(category)),
+        toggleCategoryUpdate: category => dispatch(category_toggle(category))
+    },
+    expense: {
         addExpense: expense => dispatch(expense_create(expense)),
         updateExpense: expense => dispatch(expense_update(expense)),
         deleteExpense: expense => dispatch(expense_destroy(expense)),

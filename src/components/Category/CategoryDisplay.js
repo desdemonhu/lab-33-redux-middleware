@@ -9,23 +9,23 @@ class CategoryDisplay extends React.Component {
     constructor(props) {
         super(props);
     }
-    expenseDisplay = () => {
-        return Object.keys(this.props.category.expenses).map(expense_key => {
-            let localExpense = this.props.category.expenses[expense_key];
 
-            return (this.props.category.expenses[expense_key].updating) ?
-                <ExpenseUpdate expense={localExpense} actions={this.props.actions} key={expense_key}/> : 
-                <ExpenseDisplay expense={localExpense} actions={this.props.actions} key={expense_key}/>;
+    expenseDisplay = () => {
+        return Object.keys(this.props.expenses).map(expense => {
+
+            if (this.props.expenses[expense].categoryID === this.props.category.id) return (this.props.expenses[expense].updating) 
+                ?   <ExpenseUpdate expense={this.props.expenses[expense]} actions={this.props.expense_action} key={this.props.expenses[expense].id}/> : 
+                    <ExpenseDisplay expense={this.props.expenses[expense]} actions={this.props.expense_action} key={this.props.expenses[expense].id}/>;
         });
     }
 
     toggle = () => {
 
-        this.props.actions.toggleCategoryUpdate(this.props.category.id);
+        this.props.category_action.toggleCategoryUpdate(this.props.category.id);
     }
     deleteThis = () => {
 
-        this.props.actions.deleteCategory(this.props.category.id);
+        this.props.category_action.deleteCategory(this.props.category.id);
     }
 
     render() {
@@ -42,7 +42,7 @@ class CategoryDisplay extends React.Component {
             <br />
             {this.expenseDisplay()}
             <br />
-            <ExpenseCreate categoryID={this.props.category.id} createExpense={this.props.actions.addExpense}/>
+            <ExpenseCreate categoryID={this.props.category.id} createExpense={this.props.expense_action.addExpense}/>
         </div>
         )
     }

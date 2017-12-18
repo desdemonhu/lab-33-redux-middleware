@@ -17,7 +17,7 @@ const ExpenseUpdate = ({expense, actions}) => {
     }
 
     const sendUpdate = () => {
-        actions.updateExpense({updatedContent, expense});
+        actions.updateExpense({updatedContent, id: expense.id});
         cancel();
     }
 

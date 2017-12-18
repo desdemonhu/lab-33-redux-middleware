@@ -6,31 +6,33 @@ import expect from 'expect';
 
 Enzyme.configure({ adapter: new Adapter() });
 
-import * as actions from '../src/actions/category-action';
+import * as category_actions from '../src/actions/category-action';
+import * as expense_actions from '../src/actions/expense-action';
+
 
 
 // they all return the type they are supposed to. testing done.
 test('Tesing all categories', () => {
-    let allCategories = [
+    let all_action_categories = [
         'category_create',
         'category_update',
         'category_delete',
-        'category_toggle',
+        'category_toggle'
+    ];
+
+    let all_action_expenses = [
         'expense_create',
         'expense_update',
         'expense_destroy',
         'expense_toggle'
     ];
 
-    allCategories.forEach(category => {
-        if (category === 'category_delete') {
-            expect(actions[category]().type).toEqual('CATEGORY_DESTROY');
-        return;
-        }
-
-    expect(actions[category]({}).type).toEqual(category.toUpperCase());
-
+    all_action_categories.forEach(action => {
+        expect(category_actions[action]({}).type).toEqual(action.toUpperCase());
     });
 
+    all_action_expenses.forEach(action => {
+        expect(expense_actions[action]({}).type).toEqual(action.toUpperCase());
+    });
 
 });

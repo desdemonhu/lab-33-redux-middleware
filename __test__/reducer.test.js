@@ -5,10 +5,13 @@ import sinon from 'sinon';
 import expect from 'expect';
 
 
-import categoryReducer from '../src/reducers/category-reducer';
+
 import newCategory from '../src/lib/newCategory';
 import newExpense from '../src/lib/newExpense';
 import { setState } from 'expect/build/jest_matchers_object';
+
+import expenseReducer from '../src/reducers/expense-reducer';
+import categoryReducer from '../src/reducers/category-reducer';
 
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -38,9 +41,9 @@ test('Test that CATEGORY_UPDATE updates the category name within state if the id
     state = categoryReducer(state, action);
     action = {
         type: 'CATEGORY_UPDATE',
-        content: {
+        category: {
             id: brandNewCategory1.id,
-            text: 'New Category 1 Text'
+            updatedContent: 'New Category 1 Text'
         }
     }
     state = categoryReducer(state, action);
@@ -48,7 +51,7 @@ test('Test that CATEGORY_UPDATE updates the category name within state if the id
     expect(state[brandNewCategory1.id].name).toEqual('New Category 1 Text');
 });
 
-test('Test that CATEGORY_DESTROY removes a category from the state array', () => {
+test('Test that CATEGORY_DELETE removes a category from the state array', () => {
     let brandNewCategory1 = newCategory("Our Testing Category 1", 10);
     let brandNewCategory2 = newCategory("Our Testing Category 2", 10);
     
@@ -61,8 +64,8 @@ test('Test that CATEGORY_DESTROY removes a category from the state array', () =>
     state = categoryReducer(state, action);
 
     action = {
-        type: 'CATEGORY_DESTROY',
-        id: brandNewCategory1.id
+        type: 'CATEGORY_DELETE',
+        category: brandNewCategory1.id
     }
 
     state = categoryReducer(state, action);
@@ -81,7 +84,7 @@ test('Test that toggling the updating status works. I am going to call this good
 
     action = {
         type: 'CATEGORY_TOGGLE',
-        id: brandNewCategory1.id
+        category: brandNewCategory1.id
     };
 
     state = categoryReducer(state, action);
@@ -89,80 +92,75 @@ test('Test that toggling the updating status works. I am going to call this good
     expect(brandNewCategory1.updating).toEqual(true);
 });
 
-test('Adding an expense to a category', () => {
+test('Adding an expense using EXPENSE_CREATE', () => {
     let brandNewCategory1 = newCategory("Our Testing Category 1", 10);
-    let action = {type: 'CATEGORY_CREATE', category: brandNewCategory1};
-    let state = categoryReducer(state,action);
-
     let brandNewExpense1 = newExpense({expense: 'Expense Name 1', categoryID: brandNewCategory1.id, cost:100});
 
-    action = {
+    let action = {
         type: 'EXPENSE_CREATE',
         expense: brandNewExpense1
     };
 
-    state = categoryReducer(state,action);
-    expect(Object.keys(state[brandNewCategory1.id].expenses).length).toEqual(1);
+    let state = expenseReducer(state,action);
+    expect(Object.keys(state).length).toEqual(1);
 });
 
-test('Test updating the expense that is in the category', () => {
+test('Updating an expense using EXPENSE_UPDATE', () => {
     let brandNewCategory1 = newCategory("Our Testing Category 1", 10);
-    let action = {type: 'CATEGORY_CREATE', category: brandNewCategory1};
-    let state = categoryReducer(state,action);
-
     let brandNewExpense1 = newExpense({expense: 'Expense Name 1', categoryID: brandNewCategory1.id, cost:100});
 
-    action = {
+    let action = {
         type: 'EXPENSE_CREATE',
         expense: brandNewExpense1
     };
 
-    state = categoryReducer(state,action);
+    let state = expenseReducer(state,action);
 
     action = {
         type: 'EXPENSE_UPDATE',
-        expense: brandNewExpense1,
-        update: "New Text!"
+        expense: {
+            id: brandNewExpense1.id,
+            updatedContent: 'New Text!'
+        }
     }
 
-    state = categoryReducer(state, action);
+    state = expenseReducer(state, action);
+    expect(state[Object.keys(state)[0]].expense).toEqual('New Text!');
 
-
-
-    expect(state[brandNewCategory1.id].expenses[Object.keys(state[brandNewCategory1.id].expenses)[0]].expense).toEqual("New Text!");
 });
 
-test('Deleteing an expense from a category', () => {
+test('Using EXPENSE_DESTROY to delete an expense', () => {
     let brandNewCategory1 = newCategory("Our Testing Category 1", 10);
-    let action = {type: 'CATEGORY_CREATE', category: brandNewCategory1};
-    let state = categoryReducer(state,action);
 
     let brandNewExpense1 = newExpense({expense: 'Expense Name 1', categoryID: brandNewCategory1.id, cost:100});
     let brandNewExpense2 = newExpense({expense: 'Expense Name 2', categoryID: brandNewCategory1.id, cost:100});
 
-    action = {
+    let action = {
         type: 'EXPENSE_CREATE',
         expense: brandNewExpense1
     };
 
-    state = categoryReducer(state,action);
+    let state = expenseReducer(state,action); 
+
 
     action = {
         type: 'EXPENSE_CREATE',
         expense: brandNewExpense2
     };
 
-    state = categoryReducer(state,action);    
+    state = expenseReducer(state,action);    
 
-    expect(Object.keys(state[brandNewCategory1.id].expenses).length).toEqual(2);
+
+
+    expect(Object.keys(state).length).toEqual(2);
 
     action = {
         type: 'EXPENSE_DESTROY',
         expense: brandNewExpense2
     }
 
-    state = categoryReducer(state,action); 
+    state = expenseReducer(state,action); 
 
-    expect(Object.keys(state[brandNewCategory1.id].expenses).length).toEqual(1);
+    expect(Object.keys(state).length).toEqual(1);
 
 });

@@ -1,18 +1,19 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 
-const CategoryUpdate = ({updateCategory, category, toggleCategory}) => {
+const CategoryUpdate = ({category, action}) => {
+
     let updatedContent = '';
 
     const cancel = () => {
-        toggleCategory(category.id);
+        action.toggleCategoryUpdate(category.id);
     }
     const trackChangeText = (event) => {
         updatedContent = event.target.value;
     }
     const sendUpdate = () => {
-        updateCategory({text: updatedContent, id: category.id});
-        toggleCategory(category.id);
+        action.updateCategory({updatedContent, id: category.id});
+        action.toggleCategoryUpdate(category.id);
     }
 
     return(
