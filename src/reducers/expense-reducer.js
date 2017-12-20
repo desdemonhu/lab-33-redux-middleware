@@ -1,7 +1,7 @@
 import initialState from '../lib/initialState';
 
 const errorThrower = (expense) => {
-    if (expense.name === undefined) throw new Error ('No expense text provided.');
+    if (expense.expense === undefined) throw new Error ('No expense text provided.');
   }
 
 const expenseReducer = (state = initialState, action) => {
