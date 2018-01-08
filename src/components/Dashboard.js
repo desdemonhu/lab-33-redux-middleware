@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 
 import {category_create, category_update, category_delete, category_toggle} from '../actions/category-action';
 
-import {expense_create, expense_update, expense_destroy, expense_toggle} from '../actions/expense-action';
+import {expense_create, expense_update, expense_destroy, expense_toggle, expense_category_update} from '../actions/expense-action';
 
 import CategoryCreate from './Category/CategoryCreate.js';
 import CategoryDisplay from './Category/CategoryDisplay.js';
@@ -58,7 +58,8 @@ const mapDispatchToProps = (dispatch, getState) => ({
         addExpense: expense => dispatch(expense_create(expense)),
         updateExpense: expense => dispatch(expense_update(expense)),
         deleteExpense: expense => dispatch(expense_destroy(expense)),
-        toggleExpenseUpdate: expense => dispatch(expense_toggle(expense))
+        toggleExpenseUpdate: expense => dispatch(expense_toggle(expense)),
+        categoryUpdate: expense => dispatch(expense_category_update(expense))
     }
 });
 

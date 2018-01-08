@@ -24,8 +24,12 @@ const expenseReducer = (state = initialState, action) => {
             return oldState;
 
         case 'EXPENSE_UPDATE':
-        errorThrower(expense);
+        //errorThrower(expense);
             oldState[expense.id].expense = expense.updatedContent;
+            return oldState;
+
+        case 'EXPENSE_CATEGORY_UPDATE':
+            oldState[expense.id].categoryID = expense.category;
             return oldState;
 
         default:
