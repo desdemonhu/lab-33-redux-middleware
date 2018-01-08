@@ -25,3 +25,10 @@ export const expense_toggle = expense => {
         expense
     }
 }
+
+export const expense_category_update = expense => {
+    return {
+        type: 'EXPENSE_CATEGORY_UPDATE',
+        expense
+    }
+}

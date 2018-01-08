@@ -28,9 +28,21 @@ class CategoryDisplay extends React.Component {
         this.props.category_action.deleteCategory(this.props.category.id);
     }
 
+    ondrop = (event) => {
+        event.preventDefault();
+        let data = event.dataTransfer.getData("text");
+        this.props.expense_action.categoryUpdate({id: data, category: this.props.category.id});
+        this.expenseDisplay();
+    }
+
+    ondragover = (event) => {     
+        event.preventDefault();
+        
+    }
+
     render() {
         return (
-            <div className="category-display">
+            <div className="category-display" onDragOver={this.ondragover} onDrop={this.ondrop}>
             <p>Category Name: {this.props.category.name}</p>
             <p>Category Budget: {this.props.category.budget}</p>
 
